@@ -15,7 +15,9 @@ namespace MVCPedidos.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            HomeModel Mode = new HomeModel();
+            Mode.Mensaje = "Hola mundo";
+            return View(Mode);
         }
 
         public IActionResult Privacy()
