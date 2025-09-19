@@ -17,7 +17,7 @@ namespace MVCPedidos.Data
                 .HasForeignKey(u => u.IdUsuario);
 
             modelBuilder.Entity<OrdenarObjeto>()
-                .HasMany(p => p.Producto)
+                .HasOne(p => p.Producto)
                 .WithMany(o => o.OrdenarObjeto)
                 .HasForeignKey(p => p.IdProducto);
         }
