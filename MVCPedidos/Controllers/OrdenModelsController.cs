@@ -10,22 +10,23 @@ using MVCPedidos.Models;
 
 namespace MVCPedidos.Controllers
 {
-    public class UsuarioModelsController : Controller
+    public class OrdenModelsController : Controller
     {
         private readonly PedidosDBContext _context;
 
-        public UsuarioModelsController(PedidosDBContext context)
+        public OrdenModelsController(PedidosDBContext context)
         {
             _context = context;
         }
 
-        // GET: UsuarioModels
+        // GET: OrdenModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuario.ToListAsync());
+            var pedidosDBContext = _context.Orden.Include(o => o.Usuario);
+            return View(await pedidosDBContext.ToListAsync());
         }
 
-        // GET: UsuarioModels/Details/5
+        // GET: OrdenModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,40 +34,42 @@ namespace MVCPedidos.Controllers
                 return NotFound();
             }
 
-            var usuarioModel = await _context.Usuario
+            var ordenModel = await _context.Orden
+                .Include(o => o.Usuario)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarioModel == null)
+            if (ordenModel == null)
             {
                 return NotFound();
             }
 
-            return View(usuarioModel);
+            return View(ordenModel);
         }
 
-        // GET: UsuarioModels/Create
+        // GET: OrdenModels/Create
         public IActionResult Create()
         {
+            ViewData["IdUsuario"] = new SelectList(_context.Usuario, "Id", "Email");
             return View();
         }
 
-        // POST: UsuarioModels/Create
+        // POST: OrdenModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Email,Password,Rol")] UsuarioModel usuarioModel)
+        public async Task<IActionResult> Create([Bind("Id,IdUsuario,Fecha,Estado,Total")] OrdenModel ordenModel)
         {
             //if (ModelState.IsValid)
             //{
-                _context.Add(usuarioModel);
+                _context.Add(ordenModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             //}
-            return View(usuarioModel);
-
+            ViewData["IdUsuario"] = new SelectList(_context.Usuario, "Id", "Email", ordenModel.IdUsuario);
+            return View(ordenModel);
         }
 
-        // GET: UsuarioModels/Edit/5
+        // GET: OrdenModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +77,23 @@ namespace MVCPedidos.Controllers
                 return NotFound();
             }
 
-            var usuarioModel = await _context.Usuario.FindAsync(id);
-            if (usuarioModel == null)
+            var ordenModel = await _context.Orden.FindAsync(id);
+            if (ordenModel == null)
             {
                 return NotFound();
             }
-            return View(usuarioModel);
+            ViewData["IdUsuario"] = new SelectList(_context.Usuario, "Id", "Email", ordenModel.IdUsuario);
+            return View(ordenModel);
         }
 
-        // POST: UsuarioModels/Edit/5
+        // POST: OrdenModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Email,Password,Rol")] UsuarioModel usuarioModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IdUsuario,Fecha,Estado,Total")] OrdenModel ordenModel)
         {
-            if (id != usuarioModel.Id)
+            if (id != ordenModel.Id)
             {
                 return NotFound();
             }
@@ -98,12 +102,12 @@ namespace MVCPedidos.Controllers
             {
                 try
                 {
-                    _context.Update(usuarioModel);
+                    _context.Update(ordenModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioModelExists(usuarioModel.Id))
+                    if (!OrdenModelExists(ordenModel.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +118,11 @@ namespace MVCPedidos.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuarioModel);
+            ViewData["IdUsuario"] = new SelectList(_context.Usuario, "Id", "Email", ordenModel.IdUsuario);
+            return View(ordenModel);
         }
 
-        // GET: UsuarioModels/Delete/5
+        // GET: OrdenModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,34 +130,35 @@ namespace MVCPedidos.Controllers
                 return NotFound();
             }
 
-            var usuarioModel = await _context.Usuario
+            var ordenModel = await _context.Orden
+                .Include(o => o.Usuario)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarioModel == null)
+            if (ordenModel == null)
             {
                 return NotFound();
             }
 
-            return View(usuarioModel);
+            return View(ordenModel);
         }
 
-        // POST: UsuarioModels/Delete/5
+        // POST: OrdenModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuarioModel = await _context.Usuario.FindAsync(id);
-            if (usuarioModel != null)
+            var ordenModel = await _context.Orden.FindAsync(id);
+            if (ordenModel != null)
             {
-                _context.Usuario.Remove(usuarioModel);
+                _context.Orden.Remove(ordenModel);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioModelExists(int id)
+        private bool OrdenModelExists(int id)
         {
-            return _context.Usuario.Any(e => e.Id == id);
+            return _context.Orden.Any(e => e.Id == id);
         }
     }
 }
