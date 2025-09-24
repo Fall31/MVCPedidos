@@ -10,22 +10,22 @@ using MVCPedidos.Models;
 
 namespace MVCPedidos.Controllers
 {
-    public class UsuarioModelsController : Controller
+    public class ProductoModelsController : Controller
     {
         private readonly PedidosDBContext _context;
 
-        public UsuarioModelsController(PedidosDBContext context)
+        public ProductoModelsController(PedidosDBContext context)
         {
             _context = context;
         }
 
-        // GET: UsuarioModels
+        // GET: ProductoModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuario.ToListAsync());
+            return View(await _context.Producto.ToListAsync());
         }
 
-        // GET: UsuarioModels/Details/5
+        // GET: ProductoModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,40 +33,39 @@ namespace MVCPedidos.Controllers
                 return NotFound();
             }
 
-            var usuarioModel = await _context.Usuario
+            var productoModel = await _context.Producto
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarioModel == null)
+            if (productoModel == null)
             {
                 return NotFound();
             }
 
-            return View(usuarioModel);
+            return View(productoModel);
         }
 
-        // GET: UsuarioModels/Create
+        // GET: ProductoModels/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: UsuarioModels/Create
+        // POST: ProductoModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Email,Password,Rol")] UsuarioModel usuarioModel)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,Stock")] ProductoModel productoModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuarioModel);
+                _context.Add(productoModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuarioModel);
-
+            return View(productoModel);
         }
 
-        // GET: UsuarioModels/Edit/5
+        // GET: ProductoModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +73,22 @@ namespace MVCPedidos.Controllers
                 return NotFound();
             }
 
-            var usuarioModel = await _context.Usuario.FindAsync(id);
-            if (usuarioModel == null)
+            var productoModel = await _context.Producto.FindAsync(id);
+            if (productoModel == null)
             {
                 return NotFound();
             }
-            return View(usuarioModel);
+            return View(productoModel);
         }
 
-        // POST: UsuarioModels/Edit/5
+        // POST: ProductoModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Email,Password,Rol")] UsuarioModel usuarioModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion,Precio,Stock")] ProductoModel productoModel)
         {
-            if (id != usuarioModel.Id)
+            if (id != productoModel.Id)
             {
                 return NotFound();
             }
@@ -98,12 +97,12 @@ namespace MVCPedidos.Controllers
             {
                 try
                 {
-                    _context.Update(usuarioModel);
+                    _context.Update(productoModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioModelExists(usuarioModel.Id))
+                    if (!ProductoModelExists(productoModel.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +113,10 @@ namespace MVCPedidos.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuarioModel);
+            return View(productoModel);
         }
 
-        // GET: UsuarioModels/Delete/5
+        // GET: ProductoModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,34 +124,34 @@ namespace MVCPedidos.Controllers
                 return NotFound();
             }
 
-            var usuarioModel = await _context.Usuario
+            var productoModel = await _context.Producto
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarioModel == null)
+            if (productoModel == null)
             {
                 return NotFound();
             }
 
-            return View(usuarioModel);
+            return View(productoModel);
         }
 
-        // POST: UsuarioModels/Delete/5
+        // POST: ProductoModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuarioModel = await _context.Usuario.FindAsync(id);
-            if (usuarioModel != null)
+            var productoModel = await _context.Producto.FindAsync(id);
+            if (productoModel != null)
             {
-                _context.Usuario.Remove(usuarioModel);
+                _context.Producto.Remove(productoModel);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioModelExists(int id)
+        private bool ProductoModelExists(int id)
         {
-            return _context.Usuario.Any(e => e.Id == id);
+            return _context.Producto.Any(e => e.Id == id);
         }
     }
 }
