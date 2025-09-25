@@ -46,6 +46,12 @@ namespace MVCPedidos.Controllers
         // GET: UsuarioModels/Create
         public IActionResult Create()
         {
+            ViewBag.Roles = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Administrador", Text = "Administrador" },
+                new SelectListItem { Value = "Cliente", Text = "Cliente" },
+                new SelectListItem { Value = "Empleado", Text = "Empleado" }
+            };
             return View();
         }
 
@@ -79,6 +85,12 @@ namespace MVCPedidos.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Roles = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Administrador", Text = "Administrador" },
+                new SelectListItem { Value = "Cliente", Text = "Cliente" },
+                new SelectListItem { Value = "Empleado", Text = "Empleado" }
+            };
             return View(usuarioModel);
         }
 
