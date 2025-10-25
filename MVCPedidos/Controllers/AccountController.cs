@@ -15,11 +15,11 @@ using System.Threading.Tasks;
 
 namespace MVCPedidos.Controllers
 {
-    public class UsuarioModelsController : Controller
+    public class AccountController : Controller
     {
         private readonly PedidosDBContext _context;
 
-        public UsuarioModelsController(PedidosDBContext context)
+        public AccountController(PedidosDBContext context)
         {
             _context = context;
         }
