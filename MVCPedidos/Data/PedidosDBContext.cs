@@ -20,6 +20,13 @@ namespace MVCPedidos.Data
                 .HasOne(p => p.Producto)
                 .WithMany(o => o.OrdenarObjeto)
                 .HasForeignKey(p => p.IdProducto);
+
+            base.OnModelCreating(modelBuilder);
+
+            // Configurar índice único para el email
+            modelBuilder.Entity<UsuarioModel>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
         }
 
     }

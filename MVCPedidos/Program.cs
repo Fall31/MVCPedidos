@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MVCPedidos.Data;
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PedidosDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.AccessDeniedPath = "/Account/AccesDenied";
+        options.ExpireTimeSpan = TimeSpan.FromHours(2);
+        options.SlidingExpiration = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
