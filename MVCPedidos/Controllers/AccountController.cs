@@ -186,7 +186,7 @@ namespace MVCPedidos.Controllers
         {
             var usuario = _context.Usuario.FirstOrDefault(u => u.Email == email && u.Activo);
 
-            if (usuario != null)
+            if (usuario != null && BCrypt.Net.BCrypt.Verify(password, usuario.Password))
             {
                 // Crear claims del usuario
                 var claims = new List<Claim>
@@ -194,7 +194,7 @@ namespace MVCPedidos.Controllers
                     new Claim(ClaimTypes.Name, usuario.Email),
                     new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                     new Claim(ClaimTypes.Role, usuario.Rol),
-                    new Claim("NombreCompleto", usuario.Nombre),
+                    new Claim("Nombre", usuario.Nombre),
                     new Claim("FechaNacimiento", usuario.FechaNacimiento.ToString("yyyy-MM-dd"))
                 };
 
@@ -247,7 +247,7 @@ namespace MVCPedidos.Controllers
             var usuario = new UsuarioModel
             {
                 Email = email,
-                Password = password,
+                Password = BCrypt.Net.BCrypt.HashPassword(password),
                 Nombre = nombreCompleto,
                 FechaNacimiento = fechaNacimiento,
                 Rol = "Usuario",
@@ -263,7 +263,7 @@ namespace MVCPedidos.Controllers
                 new Claim(ClaimTypes.Name, usuario.Email),
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new Claim(ClaimTypes.Role, usuario.Rol),
-                new Claim("NombreCompleto", usuario.Nombre),
+                new Claim("Nombre", usuario.Nombre),
                 new Claim("FechaNacimiento", usuario.FechaNacimiento.ToString("yyyy-MM-dd"))
             };
 
