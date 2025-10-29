@@ -53,7 +53,7 @@ namespace MVCPedidos.Controllers
         {
             ViewBag.Roles = new List<SelectListItem>
             {
-                new SelectListItem { Value = "Administrador", Text = "Administrador" },
+                new SelectListItem { Value = "Admin", Text = "Admin" },
                 new SelectListItem { Value = "Cliente", Text = "Cliente" },
                 new SelectListItem { Value = "Empleado", Text = "Empleado" }
             };
@@ -92,7 +92,7 @@ namespace MVCPedidos.Controllers
             }
             ViewBag.Roles = new List<SelectListItem>
             {
-                new SelectListItem { Value = "Administrador", Text = "Administrador" },
+                new SelectListItem { Value = "Admin", Text = "Admin" },
                 new SelectListItem { Value = "Cliente", Text = "Cliente" },
                 new SelectListItem { Value = "Empleado", Text = "Empleado" }
             };
