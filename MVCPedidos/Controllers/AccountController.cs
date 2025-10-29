@@ -72,7 +72,7 @@ namespace MVCPedidos.Controllers
                 _context.Add(usuarioModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            //}
+            //
             return View(usuarioModel);
 
         }
